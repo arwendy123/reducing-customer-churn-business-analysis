@@ -57,6 +57,32 @@ Dataset link: https://www.kaggle.com/datasets/blastchar/telco-customer-churn
 
 --- 
 
+## Key Visualizations 
+
+### Contract Type and Churn 
+
+<p align="center"> 
+  <img src="images/contract_churn.png" width="700"/> 
+</p> Month-to-month customers show a substantially higher churn concentration than customers with one-year or two-year contracts. 
+
+--- 
+
+### Tenure Distribution by Churn 
+
+<p align="center"> 
+  <img src="images/tenure_churn.png" width="700"/> 
+</p> Customers who churn generally have much shorter tenure, indicating that churn is concentrated in the early stages of the customer lifecycle. 
+
+--- 
+
+### Payment Method and Churn 
+
+<p align="center"> 
+  <img src="images/payment_churn.png" width="700"/> 
+</p> Electronic check customers show a noticeably higher churn concentration than customers using automatic payment methods. 
+
+---
+
 ## Key Insights 
 
 ### 1. Month-to-month customers have the highest churn risk
@@ -124,7 +150,10 @@ reducing-customer-churn-business-analysis/
 │ └── telco_churn.csv 
 ├── notebooks/ 
 │ └── customer_churn_analysis.ipynb 
-├── images/ 
+├── images/
+│ ├── contract_churn.png
+│ ├── tenure_churn.png
+│ └── payment_churn.png
 └── README.md 
 ```
 
