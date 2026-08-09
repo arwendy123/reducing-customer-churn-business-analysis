@@ -150,7 +150,10 @@ reducing-customer-churn-business-analysis/
 │ └── telco_churn.csv 
 ├── notebooks/ 
 │ └── customer_churn_analysis.ipynb 
-├── images/ 
+├── images/
+│ ├── contract_churn.png
+│ ├── tenure_churn.png
+│ └── payment_churn.png
 └── README.md 
 ```
 
