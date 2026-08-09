@@ -171,7 +171,7 @@ reducing-customer-churn-business-analysis/
 
 Main analysis notebook: 
 
-- [customer_churn_analysis.ipynb](notebook/customer_churn_analysis.ipynb)
+- [customer_churn_analysis.ipynb](notebooks/customer_churn_analysis.ipynb)
 
 --- 
 
