@@ -1,13 +1,35 @@
-# Customer-Churn-Prediction-and-Analysis
+# Reducing Customer Churn Through Data Analysis
 
-This project focuses on predicting and analyzing customer churn in a telecommunications company. Customer churn refers to the phenomenon of customers discontinuing their relationship with a company, which can have significant financial implications. The objective of this project is to develop a machine learning model that can accurately predict customer churn based on various features and identify the key factors contributing to churn.
+This project analyzes telecom customer data to identify high-risk customers, understand the main drivers of churn, and propose business actions to improve customer retention.
 
-The project involves several steps, including data exploration and preprocessing, feature engineering, model training, and evaluation. The dataset consists of numerical and categorical features such as account length, total day charge, number of customer service calls, and others. The dataset also has an imbalance between churned and not churned customers, with only 14.1% of the total samples belonging to the churned class.
+## Business Problem
 
-To address the class imbalance, different techniques such as resampling and SMOTE (Synthetic Minority Over-sampling Technique) are employed. The features are normalized and transformed using techniques like CountVectorizer for categorical features and StandardScaler for numerical features. The dataset is then split into training and testing sets.
+Customer churn reduces recurring revenue and increases the cost of acquiring new customers. The goal of this analysis is to identify which customers are most likely to leave and what factors contribute most to churn.
 
-Two machine learning algorithms, namely XGBoost Classifier and Random Forest Classifier, are implemented and evaluated. The XGBoost model uses the scale_pos_weight parameter to balance the classes, while the Random Forest model uses class weights. The models are trained on the training data and evaluated on the testing data using accuracy and recall scores.
+## Tools
 
-The XGBoost Classifier achieves a train accuracy of 1.0, a test accuracy of 0.95, and a recall score of 0.73. On the other hand, the Random Forest Classifier achieves a train accuracy of 0.97, a test accuracy of 0.91, and a recall score of 0.72. The importance of features is also analyzed, and it is found that total_day_charge and number_customer_service_calls are the most important features for predicting customer churn.
+- Python
+- Pandas
+- Seaborn
+- Matplotlib
+- Scikit-learn
 
-Overall, this project aims to provide insights into customer churn behavior and develop a reliable predictive model that can help the telecommunications company identify customers at risk of churn and take proactive measures to retain them. The findings and methodology can be valuable for other industries facing customer churn challenges as well.
+## Key Insights
+
+- Customers with month-to-month contracts have the highest churn rate.
+- New customers are more likely to churn.
+- Electronic check users show higher churn behavior.
+- Higher monthly charges are associated with higher churn.
+
+## Business Recommendations
+
+- Focus retention efforts on customers in their first 12 months.
+- Encourage longer-term contracts.
+- Review the payment experience for electronic check users.
+- Proactively contact high-risk customers.
+
+## Project Files
+
+- `notebooks/` - analysis and modeling
+- `images/` - charts used in the report
+- `README.md` - project summary
