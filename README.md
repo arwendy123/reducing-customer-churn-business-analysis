@@ -117,6 +117,8 @@ Focusing retention efforts on this segment can help reduce churn concentration a
 --- 
 
 ## Repository Structure 
+
+```text
 reducing-customer-churn-business-analysis/ 
 ├── data/ 
 │ └── telco_churn.csv 
@@ -124,6 +126,7 @@ reducing-customer-churn-business-analysis/
 │ └── customer_churn_analysis.ipynb 
 ├── images/ 
 └── README.md 
+```
 
 --- 
 
