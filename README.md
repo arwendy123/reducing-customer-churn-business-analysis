@@ -1,182 +1,146 @@
-# Reducing Customer Churn Through Business-Focused Data Analysis 
+# Reducing Customer Churn Through Business-Focused Data Analysis
 
-## Executive Summary 
+Exploratory analysis of 7,032 telecom customers to find who is leaving, why the pattern matters financially, and which segment a retention campaign should target first.
 
-This project analyzes telecom customer churn to identify the customer segments most at risk of leaving the company. The analysis shows that customers with month-to-month contracts, short tenure, higher monthly charges, electronic check payment methods, and no support or security services exhibit the highest churn risk. 
+## Executive Summary
 
-The project focuses on **business-oriented exploratory data analysis and retention recommendations**, rather than predictive modeling. 
+- **26.6% of customers churned** (1,869 of 7,032). Churners pay more than average, so they account for **30.5% of monthly recurring revenue** (about $139K of $456K per month, roughly **$1.67M per year** if annualized).
+- **Month-to-month customers are 55% of the base but 89% of all churners** (42.7% churn vs 11.3% for one-year and 2.8% for two-year contracts).
+- **Churn is front-loaded:** customers in their first 12 months are 31% of the base but 56% of churners. Churn falls from 53.3% (0-6 months) to 9.5% (49+ months).
+- **The best campaign target is month-to-month + Fiber optic + no TechSupport/OnlineSecurity**: 21.7% of customers, **60.7% churn rate, 49.5% of all churners, 56.3% of lost revenue**.
+- **Higher monthly charges are not a driver on their own.** The price effect is largely explained by Fiber optic customers without support add-ons (see Insight 4).
 
---- 
+> This is a descriptive analysis. Findings are associations in a single snapshot, not proven causes.
 
-## Business Problem 
+## Business Problem
 
-Customer churn reduces recurring revenue and increases customer acquisition costs. Understanding which customers are most likely to leave and what business factors are associated with churn can help prioritize retention efforts more effectively. 
+Customer churn reduces recurring revenue and raises acquisition costs. Retention budgets are limited, so the question is not only *who* churns but *which group is worth targeting first*.
 
-### Business Questions 
+**Questions:** Which customers churn most? Which factors matter most? How big is the revenue at stake? Which segment should a retention campaign prioritize?
 
-- Which customers are most likely to churn?
-- What business factors are associated with churn?
-- Which customer segment should be prioritized for retention?
-- What actions could potentially reduce churn?
+## Dataset
 
-### Objectives 
+- **Source:** [IBM Telco Customer Churn (Kaggle)](https://www.kaggle.com/datasets/blastchar/telco-customer-churn)
+- **Records:** 7,043 customers, 21 variables; 7,032 after cleaning
+- **Cleaning:** 11 rows had blank `TotalCharges`. All had `tenure = 0` (customers who had just joined), so they were removed (0.16% of data). No duplicates found.
+- **Churn rate:** 26.5% on raw data (7,043), 26.6% after cleaning (7,032). All figures below use the cleaned data.
 
-- Measure the overall churn rate
-- Identify the strongest churn drivers
-- Segment high-risk customers
-- Provide actionable retention recommendations
+## Tools
 
---- 
+Python, Pandas, NumPy, Matplotlib, Seaborn, SciPy (chi-square / Cramér's V), Jupyter Notebook
 
-## Dataset 
-- **Source:** IBM Telco Customer Churn dataset (publicly available on Kaggle)
-- **Records:** 7,043 customers (7,032 after cleaning)
-- **Features:** 21 customer and service-related variables
+## Key Insights
 
-Dataset link: https://www.kaggle.com/datasets/blastchar/telco-customer-churn 
+### 1. Contract type is the strongest factor
 
---- 
+| Contract | Customers | Churn rate |
+|---|---|---|
+| Month-to-month | 3,875 | **42.7%** |
+| One year | 1,472 | 11.3% |
+| Two year | 1,685 | 2.8% |
 
-## Tools Used
-- Python
-- Pandas
-- NumPy
-- Matplotlib
-- Seaborn
-- Jupyter Notebook
+Month-to-month is 55.1% of customers but 88.6% of churners.
 
---- 
+![Contract and churn](images/contract_churn.png)
 
-## Project Workflow 
+### 2. Churn is concentrated in the first year
 
-1. Data understanding
-2. Data cleaning
-3. Exploratory analysis
-4. Business insight generation
-5. Retention recommendations
+| Tenure (months) | Customers | Churn rate |
+|---|---|---|
+| 0-6 | 1,470 | **53.3%** |
+| 7-12 | 705 | 35.9% |
+| 13-24 | 1,024 | 28.7% |
+| 25-48 | 1,594 | 20.4% |
+| 49-72 | 2,239 | 9.5% |
 
---- 
+Median tenure is 10 months for churners vs 38 for customers who stayed. 92% of first-year customers are on month-to-month contracts.
 
-## Key Visualizations 
+![Churn by tenure bucket](images/tenure_bucket_churn.png)
 
-### Contract Type and Churn 
+### 3. Electronic check customers churn most, even within the same contract type
 
-<p align="center"> 
-  <img src="images/contract_churn.png" width="700"/> 
-</p> Month-to-month customers show a substantially higher churn concentration than customers with one-year or two-year contracts. 
+Electronic check: **45.3% churn** vs 15-19% for other methods; 33.6% of customers but 57.3% of churners. The gap holds inside month-to-month contracts (53.7% for electronic check vs 32-34% for other methods), so it is not just a contract effect.
 
---- 
+![Payment method and churn](images/payment_churn.png)
 
-### Tenure Distribution by Churn 
+### 4. Fiber optic without support add-ons is the real hotspot
 
-<p align="center"> 
-  <img src="images/tenure_churn.png" width="700"/> 
-</p> Customers who churn generally have much shorter tenure, indicating that churn is concentrated in the early stages of the customer lifecycle. 
+| Internet service | With TechSupport or OnlineSecurity | Customers | Churn rate |
+|---|---|---|---|
+| DSL | No | 788 | 35.4% |
+| DSL | Yes | 1,628 | 11.1% |
+| Fiber optic | No | 1,765 | **55.0%** |
+| Fiber optic | Yes | 1,331 | 24.5% |
 
---- 
+Add-ons are associated with much lower churn in both services. Churners do pay more on average ($74.4 vs $61.3 per month), but inside DSL the highest-priced band (> $70) churns *less* (6.7%) than the lowest (36.4%). Price alone is therefore a poor explanation; what customers bundle and which service they use matters more.
 
-### Payment Method and Churn 
+![Churn by internet service and add-ons](images/internet_addons_churn.png)
 
-<p align="center"> 
-  <img src="images/payment_churn.png" width="700"/> 
-</p> Electronic check customers show a noticeably higher churn concentration than customers using automatic payment methods. 
+### 5. Factor ranking (Cramér's V with churn)
 
----
+| Factor | Cramér's V |
+|---|---|
+| Contract | 0.41 |
+| OnlineSecurity | 0.35 |
+| TechSupport | 0.34 |
+| InternetService | 0.32 |
+| PaymentMethod | 0.30 |
+| *Gender, PhoneService* | *< 0.02 (no relationship)* |
 
-## Key Insights 
+Note: the add-on columns include a "No internet service" group with low churn (7.4%), which inflates their scores somewhat.
 
-### 1. Month-to-month customers have the highest churn risk
+## Priority Retention Segment
 
-Customers without long-term contracts churn substantially more than one-year and two-year contract customers. 
+| Segment | Customers | Churn rate | Share of churners | Share of lost revenue |
+|---|---|---|---|---|
+| New (≤12 mo) + month-to-month + high charge + e-check + no add-ons (5 factors) | 457 (6.5%) | 75.5% | 18.5% | 20.9% |
+| New (≤12 mo) + month-to-month + no add-ons | 1,188 (16.9%) | 64.5% | 41.0% | 39.1% |
+| **Month-to-month + Fiber + no add-ons** | **1,524 (21.7%)** | **60.7%** | **49.5%** | **56.3%** |
 
-### 2. Customers with short tenure churn more frequently
+Stacking all five risk factors gives the highest churn rate but is too narrow: it catches under one in five churners. A broader rule is easier to act on and captures about half of churn.
 
-Churn is concentrated in the early stages of the customer lifecycle. 
+![Segment concentration](images/segment_concentration.png)
 
-### 3. Higher monthly charges are associated with higher churn 
+## Retention Recommendations
 
-Customers paying more per month are more likely to leave, suggesting sensitivity to perceived value. 
+| # | Action | Target | Why |
+|---|---|---|---|
+| 1 | Bundle TechSupport + OnlineSecurity free for 3 months, then discounted | Month-to-month Fiber customers without add-ons | Add-ons associated with 55.0% → 24.5% churn in this group |
+| 2 | Onboarding check-ins and early-life offers | First 12 months | 56% of churners leave in year one |
+| 3 | Discount for switching to 12-month contract | Month-to-month, tenure 6+ months | 42.7% vs 11.3% churn |
+| 4 | Incentive for auto-pay | Electronic check customers | 45.3% churn vs 15-19% elsewhere |
 
-### 4. Electronic check customers show elevated churn 
+**Illustrative impact (assumption, not a forecast):** if actions reduce churn in the "new + month-to-month + no add-ons" segment (1,188 customers) by 10 percentage points (64.5% → 54.5%), about 119 customers are retained, worth roughly **$97K per year** in monthly charges; a 20-point reduction is about **$194K per year**. This ignores campaign cost, so the net benefit depends on cost per retained customer.
 
-Payment behavior appears to be associated with retention outcomes. 
+## Limitations
 
-### 5. Customers without TechSupport or OnlineSecurity are less retained 
+- Observational, single snapshot: no causal claims, and no information on *why* customers left.
+- No cost data (acquisition, campaign cost, margin), so revenue figures are billing amounts, not profit.
+- Many variables are correlated (for example, Fiber optic and higher price), so single-factor views can overstate individual effects.
+- IBM sample dataset; patterns may not transfer to a real operator.
 
-Service attachment may play an important role in customer retention. 
+## Next Steps
 
---- 
+- Build a predictive churn model (see my ML churn project: *link*).
+- Publish an interactive dashboard of these segments (Tableau Public).
 
-## Business Impact 
+## Repository Structure
 
-The analysis identifies a high-risk customer segment characterized by: 
-- Month-to-month contract
-- Short tenure
-- High monthly charges
-- Electronic check payment method
-- No TechSupport or OnlineSecurity
-
-Focusing retention efforts on this segment can help reduce churn concentration and improve the efficiency of retention campaigns. 
-
---- 
-
-## Retention Recommendations 
-
-### Improve early customer retention 
-
-- Provide onboarding support during the first 3-12 months
-- Monitor new customers with high monthly charges
-
-### Encourage longer-term contracts 
-
-- Offer incentives to migrate from month-to-month plans to annual plans
-
-### Target electronic check customers 
-- Promote automatic payment methods through discounts or convenience benefits
-
-### Increase adoption of support services 
-- Bundle TechSupport and OnlineSecurity with internet plans
-
-### Prioritize high-value customers 
-- Focus retention efforts on customers with higher monthly charges
-
---- 
-
-## Repository Structure 
-
-```text
-reducing-customer-churn-business-analysis/ 
-├── data/ 
-│ └── telco_churn.csv 
-├── notebooks/ 
-│ └── customer_churn_analysis.ipynb 
+```
+├── data/telco_churn.csv
+├── notebooks/customer_churn_analysis.ipynb
 ├── images/
-│ ├── contract_churn.png
-│ ├── tenure_churn.png
-│ └── payment_churn.png
-└── README.md 
+├── requirements.txt
+└── README.md
 ```
 
---- 
+## How to Run
 
-## How to Run 
-1. Clone this repository
-2. Install the required libraries
-3. Open the notebook in Jupyter Notebook or VS Code
-4. Run all cells sequentially
+```bash
+git clone https://github.com/arwendy123/reducing-customer-churn-business-analysis.git
+cd reducing-customer-churn-business-analysis
+pip install -r requirements.txt
+jupyter notebook notebooks/customer_churn_analysis.ipynb
+```
 
---- 
-
-## Notebook 
-
-Main analysis notebook: 
-
-- [customer_churn_analysis.ipynb](notebooks/customer_churn_analysis.ipynb)
-
---- 
-
-## Conclusion
-
-The analysis shows that churn is primarily associated with **low contract commitment, short customer tenure, higher monthly charges, electronic check payment behavior, and the absence of support and security services**. 
-
-These findings provide a clear foundation for targeted retention initiatives and demonstrate how business-focused data analysis can support customer retention decision-making.
+Python 3.10+ recommended. Run all cells in order.
